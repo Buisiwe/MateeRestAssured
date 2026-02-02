@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "message": "Testimonial updated successfully",
+  "data": {
+    "Id": "f02adc25-42e1-4512-8953-37a18cb5ed1e",
+    "Title": "Great Service!",
+    "Content": "Updated testimonial content",
+    "Rating": 4,
+    "IsPublic": 1,
+    "CreatedAt": "2026-01-15 19:10:25",
+    "UpdatedAt": "2026-01-15 19:11:23",
+    "FirstName": "John",
+    "LastName": "Doe"
+  }
+}

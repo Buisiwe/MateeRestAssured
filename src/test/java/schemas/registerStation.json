@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "ID": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "string"
+    },
+    "external_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "altitude": {
+      "type": "number"
+    },
+    "rank": {
+      "type": "number"
+    },
+    "source_type": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "ID",
+    "updated_at",
+    "created_at",
+    "user_id",
+    "external_id",
+    "name",
+    "latitude",
+    "longitude",
+    "altitude",
+    "rank",
+    "source_type"
+  ]
+}

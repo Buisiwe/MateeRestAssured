@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "message": "Your testimonials retrieved successfully",
+  "data": {
+    "testimonials": [
+      {
+        "Id": "f7e78c6b-3f0d-4b37-91d2-1cc86eb3e19f",
+        "Title": "Great Service!",
+        "Content": "This is my testimonial content describing the excellent service I received.",
+        "Rating": 5,
+        "IsPublic": 1,
+        "CreatedAt": "2026-01-15 18:56:57",
+        "UpdatedAt": "2026-01-15 18:56:57"
+      },
+      {
+        "Id": "9a674726-1ade-4e68-ae75-f4f0adc5bb1c",
+        "Title": "Great Service!",
+        "Content": "This is my testimonial content describing the excellent service I received.",
+        "Rating": 5,
+        "IsPublic": 1,
+        "CreatedAt": "2026-01-15 18:51:36",
+        "UpdatedAt": "2026-01-15 18:51:36"
+      }
+    ],
+    "pagination": {
+      "total": 2,
+      "limit": 50,
+      "offset": 0,
+      "hasMore": false
+    }
+  }
+}
