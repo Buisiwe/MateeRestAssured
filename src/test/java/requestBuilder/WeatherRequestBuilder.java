@@ -68,7 +68,7 @@ public static Response sendMeasurement(double temperature, double windSpeed, int
                 .queryParam("appid", apiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
-                .body(getStations())
+                .body(getStationsPayload())
                 .get()
                 .then()
                 .extract().response();
@@ -90,7 +90,7 @@ public static Response sendMeasurement(double temperature, double windSpeed, int
                 .queryParam("appid", apiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
-                .body(getStationID())
+                .body(getStationByIdPayload())
                 .get()
                 .then()
                 .extract().response();
@@ -112,7 +112,7 @@ public static Response sendMeasurement(double temperature, double windSpeed, int
                 .queryParam("appid", apiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
-                .body(updateStation())
+                .body(updateStationPayload("updated_external_id", "Updated Station Name", 45.0, -75.0, 200))
                 .put()
                 .then()
                 .extract().response();
@@ -134,7 +134,7 @@ public static Response sendMeasurement(double temperature, double windSpeed, int
                 .queryParam("appid", apiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
-                .body(deleteStation())
+                .body(deleteStationPayload())
                 .delete()
                 .then()
                 .extract().response();
