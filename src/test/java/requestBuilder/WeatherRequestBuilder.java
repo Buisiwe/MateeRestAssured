@@ -9,22 +9,27 @@ import org.junit.Assert;
 import java.io.File;
 
 import static common.BaseWeatherURI.baseWeatherURL;
+import static common.BasePaths.*;
 import static payloadBuilder.WeatherPayload.*;
-//import static common.BaseWeatherURI.APIKeyURL;
+import static common.Authorization.openWeatherApiKey;
 
 
 public class WeatherRequestBuilder {
-    static String apiKey;
+
     static String stationId;
 
-    public static Response registerStation(String external_id, String name, double latitude, double longitude, int altitude) {
+    public static Response registerStation() {
         Response response = RestAssured.given()
-                .baseUri(baseWeatherURL)
-                .basePath("/stations")
-                .queryParam("appid", apiKey)
+                .baseUri(openWeatherBaseUrl)
+                .basePath(openWeatherPath)
+                .queryParam("appid", openWeatherApiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
-                .body(registerStationPayload(external_id, name, latitude, longitude, altitude))
+                .body(registerStationPayload("TestExternalID",
+                        "TestStation",
+                        40.7128,
+                        -74.0060,
+                        10))
                 .post()
                 .then()
                 .extract().response();
@@ -43,7 +48,7 @@ public static Response sendMeasurement(double temperature, double windSpeed, int
         Response response = RestAssured.given()
                 .baseUri(baseWeatherURL)
                 .basePath("/measurements")
-                .queryParam("appid", apiKey)
+                .queryParam("appid", openWeatherApiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
                 .body(sendMeasurementPayload(temperature, windSpeed, humidity, dateUTC))
@@ -65,7 +70,7 @@ public static Response sendMeasurement(double temperature, double windSpeed, int
         Response response = RestAssured.given()
                 .baseUri(baseWeatherURL)
                 .basePath("/stations")
-                .queryParam("appid", apiKey)
+                .queryParam("appid", openWeatherApiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
                 .body(getStationsPayload())
@@ -87,7 +92,7 @@ public static Response sendMeasurement(double temperature, double windSpeed, int
         Response response = RestAssured.given()
                 .baseUri(baseWeatherURL)
                 .basePath("/stations/" + stationId)
-                .queryParam("appid", apiKey)
+                .queryParam("appid", openWeatherApiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
                 .body(getStationByIdPayload())
@@ -109,7 +114,7 @@ public static Response sendMeasurement(double temperature, double windSpeed, int
         Response response = RestAssured.given()
                 .baseUri(baseWeatherURL)
                 .basePath("/stations/" + stationId)
-                .queryParam("appid", apiKey)
+                .queryParam("appid", openWeatherApiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
                 .body(updateStationPayload("updated_external_id", "Updated Station Name", 45.0, -75.0, 200))
@@ -131,7 +136,7 @@ public static Response sendMeasurement(double temperature, double windSpeed, int
         Response response = RestAssured.given()
                 .baseUri(baseWeatherURL)
                 .basePath("/stations/" + stationId)
-                .queryParam("appid", apiKey)
+                .queryParam("appid", openWeatherApiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
                 .body(deleteStationPayload())

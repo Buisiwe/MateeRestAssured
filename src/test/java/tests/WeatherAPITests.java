@@ -14,32 +14,27 @@ import static payloadBuilder.TestimonialsPayload.loginUserPayload;
 import static payloadBuilder.WeatherPayload.registerStationPayload;
 import static payloadBuilder.WeatherPayload.sendMeasurementPayload;
 
+import requestBuilder.WeatherRequestBuilder;
+
+
+
+
+@Test
 public class WeatherAPITests {
     static String ap;
 
 
     @Test (priority = 1)
-    public static Response registerStation(String external_id, String name, double latitude, double longitude, int altitude) {
-        Response response = RestAssured.given()
-                .baseUri(baseURL)
-                .basePath("/stations")
-                .queryParam("appid", ap)
-                .contentType(ContentType.JSON)
-                .log().all()
-                .body(registerStationPayload(external_id, name, latitude, longitude, altitude))
-                .post()
+    public void createWeatherStationTest() {
+        WeatherRequestBuilder.registerStation()
                 .then()
-                .extract().response();
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(201)
+                .contentType("application/json; charset=utf-8");
 
-        int status = response.getStatusCode();
-        if (status == 200 || status == 201) {
-            response.then().assertThat()
-                    .body(JsonSchemaValidator.matchesJsonSchema(new File("src/test/java/schemas/registerStation.json")));
-        } else {
-            Assert.fail("API error: HTTP " + status + " - " + response.asString());
-        }
 
-        return response;
 }
 @Test (priority = 2)
 public static Response sendMeasurement(double temperature, double windSpeed, int humidity, String dateUTC) {
