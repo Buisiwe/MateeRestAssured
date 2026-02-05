@@ -1,21 +1,12 @@
 package tests;
 
-
 import org.testng.annotations.Test;
-
-
-
-
-
 import requestBuilder.WeatherRequestBuilder;
-
-
-
 
 @Test
 public class WeatherAPITests {
-    static String ap;
 
+    static String ap;
 
     @Test(priority = 1)
     public void createWeatherStationTest() {
@@ -26,7 +17,6 @@ public class WeatherAPITests {
                 .assertThat()
                 .statusCode(201)
                 .contentType("application/json; charset=utf-8");
-
 
     }
 
@@ -42,14 +32,13 @@ public class WeatherAPITests {
     }
 
     @Test(priority = 3)
-    public void sendMeasurementOnOpenWeatherTest() {
-        WeatherRequestBuilder.sendMeasurementOnOpenWeather()
+    public void createWeatherStationMeasurementTest(){
+        WeatherRequestBuilder.createWeatherMeasurementResponse()
                 .then()
                 .log()
                 .all()
                 .assertThat()
-                .statusCode(201)
-                .contentType("application/json; charset=utf-8");
+                .statusCode(204);
     }
 
     @Test(priority = 4 )
@@ -58,7 +47,7 @@ public class WeatherAPITests {
                 .then()
                 .log().all()
                 .assertThat()
-                .statusCode(201)
+                .statusCode(200)
                 .contentType("application/json; charset=utf-8");
     }
 
@@ -71,7 +60,6 @@ public class WeatherAPITests {
                 .statusCode(200)
                 .contentType("application/json; charset=utf-8");
     }
-
 
 
     @Test(priority = 6)

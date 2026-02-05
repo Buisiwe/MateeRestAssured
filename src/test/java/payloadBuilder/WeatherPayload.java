@@ -1,4 +1,5 @@
 package payloadBuilder;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class WeatherPayload {
@@ -26,22 +27,30 @@ public class WeatherPayload {
         return station;
     }
 
-    public static JSONObject sendMeasurementPayload() {
+    public static JSONArray createWeatherMeasurementBody(String stationId) {
 
-        JSONObject sendMeasurement = new JSONObject();
-        sendMeasurement.put("station_id", "6983ab09cbd4230001cc3515");
-        sendMeasurement.put("dt", 1479817340);
-        sendMeasurement.put("temperature", 18.7);
-        sendMeasurement.put("windSpeed", 1.2);
-        sendMeasurement.put("windGust", 3.4);
-        sendMeasurement.put("pressure", 1021);
-        sendMeasurement.put("humidity", 87);
-        sendMeasurement.put("rain_1h", 2);
-        sendMeasurement.put("clouds",(sendMeasurement.put("conditions","NSC")));
+        JSONObject measurement = new JSONObject();
+        measurement.put("station_id", stationId);
+        measurement.put("dt", 1479817340);
+        measurement.put("temperature", 18.7);
+        measurement.put("wind_speed", 1.2);
+        measurement.put("wind_gust", 3.4);
+        measurement.put("pressure", 1021);
+        measurement.put("humidity", 87);
+        measurement.put("rain_1h", 2);
 
-        return sendMeasurement;
+        JSONArray cloudsArray = new JSONArray();
+        JSONObject cloud = new JSONObject();
+        cloud.put("condition", "NSC");
+        cloudsArray.add(cloud);
+
+        measurement.put("clouds", cloudsArray);
+
+        JSONArray measurements = new JSONArray();
+        measurements.add(measurement);
+
+        return measurements;
     }
-
 
 
     public static JSONObject updateWeatherStationBody(){

@@ -49,18 +49,22 @@ public class WeatherRequestBuilder {
         return response;
     }
 
-    public static Response sendMeasurementOnOpenWeather() {
+    public static Response createWeatherMeasurementResponse() {
+
+        if (stationId == null) {
+            throw new IllegalStateException("Weather station ID is null. Create station first.");
+        }
+
         return RestAssured.given()
                 .baseUri(openWeatherBaseUrl)
-                .basePath(openWeatherPath + "/" + stationId )
-                .queryParam("appid", openWeatherApiKey)
+                .basePath(openWeatherMeasurementPath)
                 .contentType(ContentType.JSON)
+                .queryParam("appid", openWeatherApiKey)
                 .log().all()
-                .body(sendMeasurementPayload())
+                .body(createWeatherMeasurementBody(stationId)) // JSONArray
                 .post()
                 .then()
                 .extract().response();
-
     }
 
 
