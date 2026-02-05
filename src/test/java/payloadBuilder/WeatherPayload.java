@@ -2,61 +2,61 @@ package payloadBuilder;
 import org.json.simple.JSONObject;
 
 public class WeatherPayload {
-    public static JSONObject registerStationPayload(String external_id, String name, double latitude, double longitude, int altitude) {
+    public static JSONObject registerStationPayload() {
 
         JSONObject registerStation = new JSONObject();
-        registerStation.put("external_id", external_id);
-        registerStation.put("name", name);
-        registerStation.put("latitude", latitude);
-        registerStation.put("longitude", longitude);
-        registerStation.put("altitude", altitude);
+        registerStation.put("external_id", "SF_TEST001");
+        registerStation.put("name", "San Francisco Test Station");
+        registerStation.put("latitude", 37.76);
+        registerStation.put("longitude", -122.43);
+        registerStation.put("altitude", 150);
 
         return registerStation;
     }
 
-    public static JSONObject sendMeasurementPayload(double temperature, double windSpeed, int humidity, String dateUTC) {
+    public static JSONObject createWeatherStationWithoutNameBody(){
+
+        JSONObject station = new JSONObject();
+        station.put("external_id","ext station id");
+        station.put("name","");
+        station.put("latitude",37.76);
+        station.put("longitude",-122.43);
+        station.put("altitude",230);
+
+        return station;
+    }
+
+    public static JSONObject sendMeasurementPayload() {
 
         JSONObject sendMeasurement = new JSONObject();
-        sendMeasurement.put("temperature", temperature);
-        sendMeasurement.put("windSpeed", windSpeed);
-       //sendMeasurement.put("windGust", windGust;
-
-        sendMeasurement.put("humidity", humidity);
-        sendMeasurement.put("date_utc", dateUTC);
+        sendMeasurement.put("station_id", "6983ab09cbd4230001cc3515");
+        sendMeasurement.put("dt", 1479817340);
+        sendMeasurement.put("temperature", 18.7);
+        sendMeasurement.put("windSpeed", 1.2);
+        sendMeasurement.put("windGust", 3.4);
+        sendMeasurement.put("pressure", 1021);
+        sendMeasurement.put("humidity", 87);
+        sendMeasurement.put("rain_1h", 2);
+        sendMeasurement.put("clouds",(sendMeasurement.put("conditions","NSC")));
 
         return sendMeasurement;
     }
 
-    public static JSONObject getStationsPayload() {
 
-        JSONObject getStations = new JSONObject();
 
-        return getStations;
+    public static JSONObject updateWeatherStationBody(){
+
+        JSONObject station = new JSONObject();
+        station.put("external_id","ext station id");
+        station.put("name","Update first station");
+        station.put("latitude",40.23);
+        station.put("longitude",-122.43);
+        station.put("altitude",230);
+
+        return station;
     }
 
-    public static JSONObject getStationByIdPayload() {
 
-        JSONObject getStationById = new JSONObject();
-
-        return getStationById;
-    }
-    public static JSONObject updateStationPayload(String external_id, String name, double latitude, double longitude, int altitude) {
-
-        JSONObject updateStation = new JSONObject();
-        updateStation.put("external_id", external_id);
-        updateStation.put("name", name);
-        updateStation.put("latitude", latitude);
-        updateStation.put("longitude", longitude);
-        updateStation.put("altitude", altitude);
-
-        return updateStation;
-    }
-    public static JSONObject deleteStationPayload() {
-
-        JSONObject deleteStation = new JSONObject();
-
-        return deleteStation;
-    }
 
 }
 

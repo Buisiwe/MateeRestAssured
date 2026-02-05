@@ -8,7 +8,6 @@ import org.junit.Assert;
 
 import java.io.File;
 
-import static common.BaseWeatherURI.baseWeatherURL;
 import static common.BasePaths.*;
 import static payloadBuilder.WeatherPayload.*;
 import static common.Authorization.openWeatherApiKey;
@@ -25,133 +24,96 @@ public class WeatherRequestBuilder {
                 .queryParam("appid", openWeatherApiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
-                .body(registerStationPayload("TestExternalID",
-                        "TestStation",
-                        40.7128,
-                        -74.0060,
-                        10))
+                .body(registerStationPayload())
                 .post()
                 .then()
                 .extract().response();
 
-        int status = response.getStatusCode();
-        if (status == 200 || status == 201) {
-            response.then().assertThat()
-                    .body(JsonSchemaValidator.matchesJsonSchema(new File("src/test/java/schemas/registerStation.json")));
-        } else {
-            Assert.fail("API error: HTTP " + status + " - " + response.asString());
-        }
+        stationId = response.jsonPath().getString("ID");
 
         return response;
     }
-public static Response sendMeasurement(double temperature, double windSpeed, int humidity, String dateUTC) {
+
+
+    public static Response createWeatherStationWithoutNameBodyRes() {
         Response response = RestAssured.given()
-                .baseUri(baseWeatherURL)
-                .basePath("/measurements")
+                .baseUri(openWeatherBaseUrl)
+                .basePath(openWeatherPath)
                 .queryParam("appid", openWeatherApiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
-                .body(sendMeasurementPayload(temperature, windSpeed, humidity, dateUTC))
+                .body(createWeatherStationWithoutNameBody())
+                .post()
+                .then()
+                .extract().response();
+        return response;
+    }
+
+    public static Response sendMeasurementOnOpenWeather() {
+        return RestAssured.given()
+                .baseUri(openWeatherBaseUrl)
+                .basePath(openWeatherPath + "/" + stationId )
+                .queryParam("appid", openWeatherApiKey)
+                .contentType(ContentType.JSON)
+                .log().all()
+                .body(sendMeasurementPayload())
                 .post()
                 .then()
                 .extract().response();
 
-        int status = response.getStatusCode();
-        if (status == 200 || status == 201) {
-            response.then().assertThat()
-                    .body(JsonSchemaValidator.matchesJsonSchema(new File("src/test/java/schemas/sendMeasurement.json")));
-        } else {
-            Assert.fail("API error: HTTP " + status + " - " + response.asString());
-        }
-
-        return response;
     }
-    public static Response getStations() {
-        Response response = RestAssured.given()
-                .baseUri(baseWeatherURL)
-                .basePath("/stations")
-                .queryParam("appid", openWeatherApiKey)
+
+
+    public static Response updateOpenWeatherResponse() {
+        return RestAssured.given()
+                .baseUri(openWeatherBaseUrl)
+                .basePath(openWeatherPath + "/" + stationId)
                 .contentType(ContentType.JSON)
-                .log().all()
-                .body(getStationsPayload())
-                .get()
-                .then()
-                .extract().response();
-
-        int status = response.getStatusCode();
-        if (status == 200) {
-            response.then().assertThat()
-                    .body(JsonSchemaValidator.matchesJsonSchema(new File("src/test/java/schemas/getStations.json")));
-        } else {
-            Assert.fail("API error: HTTP " + status + " - " + response.asString());
-        }
-
-        return response;
-    }
-    public static Response getStationID () {
-        Response response = RestAssured.given()
-                .baseUri(baseWeatherURL)
-                .basePath("/stations/" + stationId)
                 .queryParam("appid", openWeatherApiKey)
-                .contentType(ContentType.JSON)
                 .log().all()
-                .body(getStationByIdPayload())
-                .get()
-                .then()
-                .extract().response();
-
-        int status = response.getStatusCode();
-        if (status == 200) {
-            response.then().assertThat()
-                    .body(JsonSchemaValidator.matchesJsonSchema(new File("src/test/java/schemas/getStationID.json")));
-        } else {
-            Assert.fail("API error: HTTP " + status + " - " + response.asString());
-        }
-
-        return response;
-    }
-    public static Response updateStation () {
-        Response response = RestAssured.given()
-                .baseUri(baseWeatherURL)
-                .basePath("/stations/" + stationId)
-                .queryParam("appid", openWeatherApiKey)
-                .contentType(ContentType.JSON)
-                .log().all()
-                .body(updateStationPayload("updated_external_id", "Updated Station Name", 45.0, -75.0, 200))
+                .body(updateWeatherStationBody())
                 .put()
                 .then()
                 .extract().response();
 
-        int status = response.getStatusCode();
-        if (status == 200) {
-            response.then().assertThat()
-                    .body(JsonSchemaValidator.matchesJsonSchema(new File("src/test/java/schemas/updateStation.json")));
-        } else {
-            Assert.fail("API error: HTTP " + status + " - " + response.asString());
-        }
-
-        return response;
     }
-    public static Response deleteStation () {
-        Response response = RestAssured.given()
-                .baseUri(baseWeatherURL)
-                .basePath("/stations/" + stationId)
+
+    public static Response getAllStationsOnOpenWeather() {
+        return RestAssured.given()
+                .baseUri(openWeatherBaseUrl)
+                .basePath(openWeatherPath)
                 .queryParam("appid", openWeatherApiKey)
                 .contentType(ContentType.JSON)
                 .log().all()
-                .body(deleteStationPayload())
+                .get()
+                .then()
+                .extract().response();
+
+    }
+
+    public static Response getStationByIdOnOpenWeather() {
+        return RestAssured.given()
+                .baseUri(openWeatherBaseUrl)
+                .basePath(openWeatherPath + "/" + stationId)
+                .queryParam("appid", openWeatherApiKey)
+                .contentType(ContentType.JSON)
+                .log().all()
+                .get()
+                .then()
+                .extract().response();
+
+    }
+
+    public static Response deleteWeatherStation() {
+        return RestAssured.given()
+                .baseUri(openWeatherBaseUrl)
+                .basePath(openWeatherPath + "/" + stationId)
+                .queryParam("appid", openWeatherApiKey)
+                .log().all()
                 .delete()
                 .then()
                 .extract().response();
 
-        int status = response.getStatusCode();
-        if (status == 200 || status == 204) {
-            response.then().assertThat()
-                    .body(JsonSchemaValidator.matchesJsonSchema(new File("src/test/java/schemas/deleteStation.json")));
-        } else {
-            Assert.fail("API error: HTTP " + status + " - " + response.asString());
-        }
-
-        return response;
     }
+
 }

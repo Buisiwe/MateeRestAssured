@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import java.io.File;
 
-import static common.BaseURI.baseURL;
+import  static common.BasePaths.*;
 import static payloadBuilder.TestimonialsPayload.*;
 
 public  class NdosiAPITests {
@@ -19,7 +19,7 @@ public  class NdosiAPITests {
     public static  Response loginUserResponse(String email, String password){
 
         Response response = RestAssured.given()
-                .baseUri(baseURL)
+                .baseUri(NdosiAPIbaseURL)
                 .basePath("/API/login")
                 .contentType(ContentType.JSON)
                 .log().all()
@@ -37,7 +37,7 @@ public  class NdosiAPITests {
     public static Response createTestimonialResponse(){
 
         Response response = RestAssured.given()
-                .baseUri(baseURL)
+                .baseUri(NdosiAPIbaseURL)
                 .basePath("/API/testimonials")
                 .header("Authorization", "Bearer " + authToken)
                 .contentType(ContentType.JSON)
@@ -54,7 +54,7 @@ public  class NdosiAPITests {
     public static Response updateTestimonialResponse(){
 
         return RestAssured.given()
-                .baseUri(baseURL)
+                .baseUri(NdosiAPIbaseURL)
                 .basePath("/API/testimonials/"+testimonialId)
                 .header("Authorization", "Bearer " + authToken)
                 .contentType(ContentType.JSON)
@@ -68,7 +68,7 @@ public  class NdosiAPITests {
     public static Response retrieveTestimonialResponse(){
 
         return RestAssured.given()
-                .baseUri(baseURL)
+                .baseUri(NdosiAPIbaseURL)
                 .basePath("/API/testimonials")
                 .header("Authorization", "Bearer " + authToken)
                 .contentType(ContentType.JSON)
@@ -81,7 +81,7 @@ public  class NdosiAPITests {
     public static Response removeTestimonialResponse(){
 
         return RestAssured.given()
-                .baseUri(baseURL)
+                .baseUri(NdosiAPIbaseURL)
                 .basePath("/API/testimonials/"+testimonialId)
                 .header("Authorization", "Bearer " + authToken)
                 .contentType(ContentType.JSON)
