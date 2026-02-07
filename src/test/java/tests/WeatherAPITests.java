@@ -41,7 +41,18 @@ public class WeatherAPITests {
                 .statusCode(204);
     }
 
-    @Test(priority = 4 )
+    @Test(priority = 3)
+    public void createWeatherStationMeasurementWithoutDTNegativeTest(){
+        WeatherRequestBuilder.createWeatherMeasurementWithoutDTResponse()
+                .then()
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(400)
+                .contentType("application/json; charset=utf-8");
+    }
+
+    @Test(priority = 5 )
     public void getWeatherStationTest() {
         WeatherRequestBuilder.getAllStationsOnOpenWeather()
                 .then()
@@ -51,7 +62,17 @@ public class WeatherAPITests {
                 .contentType("application/json; charset=utf-8");
     }
 
-    @Test(priority = 5)
+    @Test(priority = 6)
+    public void getWeatherStationNegativeTest() {
+        WeatherRequestBuilder.getAllStationsOnOpenWeatherWithWrongAPIkey()
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(401)
+                .contentType("application/json; charset=utf-8");
+    }
+
+    @Test(priority = 7)
     public void getWeatherStationByIdTest() {
         WeatherRequestBuilder.getStationByIdOnOpenWeather()
                 .then()
@@ -62,7 +83,7 @@ public class WeatherAPITests {
     }
 
 
-    @Test(priority = 6)
+    @Test(priority = 8)
     public void updateWeatherStationTest(){
         WeatherRequestBuilder.updateOpenWeatherResponse()
                 .then()
@@ -72,7 +93,17 @@ public class WeatherAPITests {
                 .contentType("application/json; charset=utf-8");
     }
 
-    @Test(priority = 7)
+    @Test(priority = 9)
+    public void updateWeatherStationWithoutExternalIdNegativeTest(){
+        WeatherRequestBuilder.updateOpenWeatherResponseWithoutExternalIdResponse()
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(400)
+                .contentType("application/json; charset=utf-8");
+    }
+
+    @Test(priority = 10)
     public void deleteWeatherStationTest(){
         WeatherRequestBuilder.deleteWeatherStation()
                 .then()

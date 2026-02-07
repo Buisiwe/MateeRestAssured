@@ -8,6 +8,7 @@ import org.junit.Assert;
 
 import java.io.File;
 
+import static common.Authorization.wrongAPIkey;
 import static common.BasePaths.*;
 import static payloadBuilder.WeatherPayload.*;
 import static common.Authorization.openWeatherApiKey;
@@ -67,6 +68,24 @@ public class WeatherRequestBuilder {
                 .extract().response();
     }
 
+    public static Response createWeatherMeasurementWithoutDTResponse() {
+
+        if (stationId == null) {
+            throw new IllegalStateException("Weather station ID is null. Create station first.");
+        }
+
+        return RestAssured.given()
+                .baseUri(openWeatherBaseUrl)
+                .basePath(openWeatherMeasurementPath)
+                .contentType(ContentType.JSON)
+                .queryParam("appid", openWeatherApiKey)
+                .log().all()
+                .body(createWeatherMeasurementBodyWithoutDT(stationId)) // JSONArray
+                .post()
+                .then()
+                .extract().response();
+    }
+
 
     public static Response updateOpenWeatherResponse() {
         return RestAssured.given()
@@ -82,11 +101,40 @@ public class WeatherRequestBuilder {
 
     }
 
+
+
+    public static Response updateOpenWeatherResponseWithoutExternalIdResponse() {
+        return RestAssured.given()
+                .baseUri(openWeatherBaseUrl)
+                .basePath(openWeatherPath + "/" + stationId)
+                .contentType(ContentType.JSON)
+                .queryParam("appid", openWeatherApiKey)
+                .log().all()
+                .body(updateWeatherStationBodyWithoutExternalID())
+                .put()
+                .then()
+                .extract().response();
+
+    }
+
     public static Response getAllStationsOnOpenWeather() {
         return RestAssured.given()
                 .baseUri(openWeatherBaseUrl)
                 .basePath(openWeatherPath)
                 .queryParam("appid", openWeatherApiKey)
+                .contentType(ContentType.JSON)
+                .log().all()
+                .get()
+                .then()
+                .extract().response();
+
+    }
+
+    public static Response getAllStationsOnOpenWeatherWithWrongAPIkey() {
+        return RestAssured.given()
+                .baseUri(openWeatherBaseUrl)
+                .basePath(openWeatherPath)
+                .queryParam("appid",wrongAPIkey)
                 .contentType(ContentType.JSON)
                 .log().all()
                 .get()
