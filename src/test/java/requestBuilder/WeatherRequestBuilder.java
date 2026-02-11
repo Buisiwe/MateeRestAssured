@@ -37,7 +37,7 @@ public class WeatherRequestBuilder {
 
 
     public static Response createWeatherStationWithoutNameBodyRes() {
-        Response response = RestAssured.given()
+        return RestAssured.given()
                 .baseUri(openWeatherBaseUrl)
                 .basePath(openWeatherPath)
                 .queryParam("appid", openWeatherApiKey)
@@ -47,7 +47,6 @@ public class WeatherRequestBuilder {
                 .post()
                 .then()
                 .extract().response();
-        return response;
     }
 
     public static Response createWeatherMeasurementResponse() {
@@ -134,7 +133,7 @@ public class WeatherRequestBuilder {
         return RestAssured.given()
                 .baseUri(openWeatherBaseUrl)
                 .basePath(openWeatherPath)
-                .queryParam("appid",wrongAPIkey)
+                .queryParam("hhhh",wrongAPIkey)
                 .contentType(ContentType.JSON)
                 .log().all()
                 .get()

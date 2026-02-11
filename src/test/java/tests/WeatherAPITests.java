@@ -6,7 +6,6 @@ import requestBuilder.WeatherRequestBuilder;
 @Test
 public class WeatherAPITests {
 
-    static String ap;
 
     @Test(priority = 1)
     public void createWeatherStationTest() {

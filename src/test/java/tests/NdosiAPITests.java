@@ -13,7 +13,7 @@ import static payloadBuilder.TestimonialsPayload.*;
 
 public  class NdosiAPITests {
 
-    static String authToken;
+   /* static String authToken;
     static String testimonialId;
     //@Test ()
     public static  Response loginUserResponse(String email, String password){
@@ -23,7 +23,7 @@ public  class NdosiAPITests {
                 .basePath("/API/login")
                 .contentType(ContentType.JSON)
                 .log().all()
-                .body(loginUserPayload(email,password))
+                .body(loginUserPayload())
                 .post()
                 .then()
                 .extract().response();
@@ -89,5 +89,5 @@ public  class NdosiAPITests {
                 .delete()
                 .then()
                 .extract().response();
-    }
+    }*/
 }
