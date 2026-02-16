@@ -2,23 +2,24 @@ package payloadBuilder;
 
 import org.json.simple.JSONObject;
 
-public class TestimonialsPayload {
+public class NdosiAPIPayload {
     public static JSONObject registerUserPayload() {
 
         JSONObject registerUser = new JSONObject();
-        registerUser.put("firstname","John");
-        registerUser.put("lastname","Doe");
-        registerUser.put("email"," mpydf5dm1z@example.com");
-        registerUser.put("password","SecurePass123");
-        registerUser.put("confirmPassword","SecurePass123");
+        registerUser.put("firstName","John");
+        registerUser.put("lastName","Doe");
+        registerUser.put("email","22bee@gmail.com");
+        registerUser.put("password","SecurePass123@");
+        registerUser.put("confirmPassword","SecurePass123@");
+        registerUser.put("groupId","5328c91e-fc40-11f0-8e00-5000e6331276");
         return registerUser;
     }
 
     public static JSONObject loginUserPayload() {
 
         JSONObject loginUser = new JSONObject();
-        loginUser.put("email","mpydf5dm1z@example.com");
-        loginUser.put("password","SecurePass123");
+        loginUser.put("email","bee@gmail.com");
+        loginUser.put("password","SecurePass123@");
 
         return loginUser;
     }
@@ -32,15 +33,15 @@ public class TestimonialsPayload {
         return testimonial;
     }
 
-    public static JSONObject updateUserProfilePayload(String token,String email){
+    public static JSONObject updateUserProfilePayload(){
         JSONObject updateUserProfile = new JSONObject();
         updateUserProfile.put("full_name","Busi Matee");
         return updateUserProfile;
     }
 
-    public static JSONObject updateTestimonialPayload(String user_Id){
+    public static JSONObject updateTestimonialPayload(){
         JSONObject updateTestimonial = new JSONObject();
-        updateTestimonial.put("userid",user_Id);
+        updateTestimonial.put("title","Updated Testimonial Title");
         updateTestimonial.put("content","Updated testimonial content");
         updateTestimonial.put("rating",4);
 

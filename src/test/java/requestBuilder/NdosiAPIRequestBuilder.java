@@ -3,33 +3,32 @@ package requestBuilder;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.json.simple.JSONObject;
+
 import static common.BasePaths.*;
 
 
-import static payloadBuilder.TestimonialsPayload.*;
+import static payloadBuilder.NdosiAPIPayload.*;
 
-public class TestimonialRequestBuilder {
+public class NdosiAPIRequestBuilder {
+    static String userToken;
+    static String testimonialId;
 
-    static String  testimonialToken;
     public static Response registerUser() {
-        Response response = RestAssured.given()
+                return RestAssured.given()
                 .baseUri(testimonialBaseUrl)
-                .basePath("/APIDEV/register")
+                .basePath(registerPath)
                 .contentType(ContentType.JSON)
                 .log().all()
-                .body(loginUserPayload().toJSONString())
+                .body(registerUserPayload().toJSONString())
                 .post()
                 .then()
                 .extract().response();
-
-        return response;
     }
 
     public static Response loginUser() {
         Response response = RestAssured.given()
                 .baseUri(testimonialBaseUrl)
-                .basePath("/APIDEV/login")
+                .basePath(loginPath)
                 .contentType(ContentType.JSON)
                 .log().all()
                 .body(loginUserPayload().toJSONString())
@@ -37,89 +36,86 @@ public class TestimonialRequestBuilder {
                 .then()
                 .extract().response();
 
-        testimonialToken = response.jsonPath().getString("token");
+        userToken = response.jsonPath().getString("data.token");
 
         return response;
     }
     public static Response createTestimonial( ) {
         Response response = RestAssured.given()
                 .baseUri(testimonialBaseUrl)
-                .basePath("/APIDEV/testimonials")
+                .basePath(testimonialsPath)
                 .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + testimonialToken)
+                .header("Authorization", "Bearer " + userToken)
                 .log().all()
                 .body(createTestimonialPayload())
                 .post()
                 .then()
                 .extract().response();
+
+            testimonialId = response.jsonPath().getString("data.Id");
         return response;
     }
 
     public static Response getUserProfile() {
-        Response response = RestAssured.given()
+        return RestAssured.given()
                 .baseUri(testimonialBaseUrl)
-                .basePath("/APIDEV/profile")
+                .basePath(userProfilePath)
                 .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + testimonialToken)
+                .header("Authorization", "Bearer " + userToken)
                 .log().all()
                 .get()
                 .then()
                 .extract().response();
-        return response;
     }
 
     public static Response updateUserProfile() {
 
-        Response response = RestAssured.given()
+        return RestAssured.given()
                 .baseUri(testimonialBaseUrl)
-                .basePath("/APIDEV/profile")
+                .basePath(userProfilePath)
                 .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + testimonialToken)
+                .header("Authorization", "Bearer " + userToken)
                 .log().all()
-                .body(updateUserProfilePayload("token","email").toJSONString())
+                .body(updateUserProfilePayload())
                 .put()
                 .then()
                 .extract().response();
-        return response;
     }
 
     public static Response getTestimonial() {
-        Response response = RestAssured.given()
+        return RestAssured.given()
                 .baseUri(testimonialBaseUrl)
-                .basePath("/APIDEV/testimonials")
+                .basePath(testimonialsPath)
                 .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + testimonialToken)
+                .header("Authorization", "Bearer " + userToken)
                 .log().all()
                 .get()
                 .then()
                 .extract().response();
-        return response;
     }
 
     public static Response updateTestimonial() {
-        Response response = RestAssured.given()
+       return RestAssured.given()
                 .baseUri(testimonialBaseUrl)
-                .basePath("/APIDEV/testimonials")
+                .basePath(testimonialsPath + "/" + testimonialId)
                 .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + testimonialToken)
+                .header("Authorization", "Bearer " + userToken)
                 .log().all()
-                .body(updateTestimonialPayload("user_Id"))
+                .body(updateTestimonialPayload())
                 .put()
                 .then()
                 .extract().response();
-        return response;
     }
 
     public static Response deleteTestimonial() {
-        Response response = RestAssured.given()
+        return RestAssured.given()
                 .baseUri(testimonialBaseUrl)
-                .basePath("/APIDEV/testimonials")
+                .basePath(testimonialsPath + "/" + testimonialId)
                 .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + testimonialToken)
+                .header("Authorization", "Bearer " + userToken)
                 .log().all()
                 .delete()
                 .then()
                 .extract().response();
-        return response;
     }
 }

@@ -1,93 +1,97 @@
 package tests;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.module.jsv.JsonSchemaValidator;
-import io.restassured.response.Response;
-import org.junit.Test;
+import org.testng.annotations.Test;
+import requestBuilder.NdosiAPIRequestBuilder;
 
-import java.io.File;
+public class NdosiAPITests {
 
-import  static common.BasePaths.*;
-import static payloadBuilder.TestimonialsPayload.*;
-
-public  class NdosiAPITests {
-
-   /* static String authToken;
-    static String testimonialId;
-    //@Test ()
-    public static  Response loginUserResponse(String email, String password){
-
-        Response response = RestAssured.given()
-                .baseUri(NdosiAPIbaseURL)
-                .basePath("/API/login")
-                .contentType(ContentType.JSON)
-                .log().all()
-                .body(loginUserPayload())
-                .post()
+    @Test(priority = 0)
+    public void registerUserTest() {
+        NdosiAPIRequestBuilder.registerUser()
                 .then()
-                .extract().response();
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(201)
+                .contentType("application/json; charset=utf-8");
+    }
 
-        authToken = response.jsonPath().getString("data.token");
-        response.then().assertThat().body(JsonSchemaValidator.matchesJsonSchema(new File("src/test/java/schemas/loginUser.json")));
-        return response;
+
+    @Test(priority = 1)
+    public void loginUserTest() {
+        NdosiAPIRequestBuilder.loginUser()
+                .then()
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(200)
+                .contentType("application/json; charset=utf-8");
 
     }
 
-    public static Response createTestimonialResponse(){
-
-        Response response = RestAssured.given()
-                .baseUri(NdosiAPIbaseURL)
-                .basePath("/API/testimonials")
-                .header("Authorization", "Bearer " + authToken)
-                .contentType(ContentType.JSON)
-                .log().all()
-                .body(createTestimonialPayload("Testimonial1","This is an awesome class",4,true))
-                .post()
+    @Test(priority = 2)
+    public void getUserProfileTest() {
+        NdosiAPIRequestBuilder.getUserProfile()
                 .then()
-                .extract().response();
-
-        testimonialId = response.jsonPath().getString("data.Id");
-        return response;
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(200)
+                .contentType("application/json; charset=utf-8");
     }
 
-    public static Response updateTestimonialResponse(){
-
-        return RestAssured.given()
-                .baseUri(NdosiAPIbaseURL)
-                .basePath("/API/testimonials/"+testimonialId)
-                .header("Authorization", "Bearer " + authToken)
-                .contentType(ContentType.JSON)
-                .log().all()
-                .body(updateTestimonialPayload("Testimonial2","This is an awesome class",4,true))
-                .put()
+    @Test(priority = 3)
+    public void updateUserProfileTest() {
+        NdosiAPIRequestBuilder.updateUserProfile()
                 .then()
-                .extract().response();
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(200)
+                .contentType("application/json; charset=utf-8");
     }
 
-    public static Response retrieveTestimonialResponse(){
 
-        return RestAssured.given()
-                .baseUri(NdosiAPIbaseURL)
-                .basePath("/API/testimonials")
-                .header("Authorization", "Bearer " + authToken)
-                .contentType(ContentType.JSON)
-                .log().all()
-                .get()
+    @Test(priority = 4)
+    public void createTestimonialTest() {
+        NdosiAPIRequestBuilder.createTestimonial()
                 .then()
-                .extract().response();
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(201)
+                .contentType("application/json; charset=utf-8");
     }
 
-    public static Response removeTestimonialResponse(){
-
-        return RestAssured.given()
-                .baseUri(NdosiAPIbaseURL)
-                .basePath("/API/testimonials/"+testimonialId)
-                .header("Authorization", "Bearer " + authToken)
-                .contentType(ContentType.JSON)
-                .log().all()
-                .delete()
+    @Test(priority = 5)
+    public void updateTestimonialTest() {
+        NdosiAPIRequestBuilder.updateTestimonial()
                 .then()
-                .extract().response();
-    }*/
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(200)
+                .contentType("application/json; charset=utf-8");
+    }
+
+    @Test(priority = 6)
+    public void retrieveTestimonialTest() {
+        NdosiAPIRequestBuilder.getTestimonial()
+                .then()
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(200)
+                .contentType("application/json; charset=utf-8");
+    }
+
+    @Test(priority = 7)
+    void deleteTestimonialTest() {
+        NdosiAPIRequestBuilder.deleteTestimonial()
+                .then()
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(200);
+    }
 }
